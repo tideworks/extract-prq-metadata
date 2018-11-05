@@ -1,38 +1,15 @@
 package com.tideworks.extract_prq_metadata;
 
 import com.tideworks.annotation.InvokeByteCodePatching;
-import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericData;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.parquet.avro.AvroParquetReader;
-import org.apache.parquet.avro.AvroParquetWriter;
-import org.apache.parquet.bytes.BytesUtils;
-import org.apache.parquet.format.Util;
-import org.apache.parquet.format.converter.ParquetMetadataConverter;
-import org.apache.parquet.hadoop.ParquetFileReader;
-import org.apache.parquet.hadoop.ParquetFileWriter;
-import org.apache.parquet.hadoop.ParquetReader;
-import org.apache.parquet.hadoop.ParquetWriter;
-import org.apache.parquet.hadoop.metadata.CompressionCodecName;
-import org.apache.parquet.hadoop.metadata.ParquetMetadata;
-import org.apache.parquet.io.PositionOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
-import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static com.tideworks.data_load.io.InputFile.nioPathToInputFile;
-import static com.tideworks.data_load.io.OutputFile.nioPathToOutputFile;
 
 @InvokeByteCodePatching
 public class ExtractMetaData {
@@ -55,7 +32,19 @@ public class ExtractMetaData {
 
   public static void main(String[] args) {
     try {
-      System.out.println("hello world");
+      if (args.length <= 0) {
+        LOGGER.error("please supply a directory path to root node of directory tree to be scanned");
+        System.exit(1); // return non-zero status to indicate program failure
+      }
+      final Path dirTreeRootNode = Paths.get(args[0]);
+      if (Files.notExists(dirTreeRootNode)) {
+        LOGGER.error("directory path \"{}\" does not exist", dirTreeRootNode);
+        System.exit(1); // return non-zero status to indicate program failure
+      } else if (!Files.isDirectory(dirTreeRootNode)) {
+        LOGGER.error("file path \"{}\" is not a directory", dirTreeRootNode);
+        System.exit(1); // return non-zero status to indicate program failure
+      }
+      System.out.printf("Hello World!%nDirectory tree root node: \"%s\"", dirTreeRootNode);
     } catch (Throwable e) {
       LOGGER.error("program terminated due to exception:", e);
       System.exit(1); // return non-zero status to indicate program failure
