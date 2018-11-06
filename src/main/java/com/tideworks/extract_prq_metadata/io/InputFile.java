@@ -1,10 +1,10 @@
-/** InputFile.java
+/* InputFile.java
  *
  * Copyright May 2018 Tideworks Technology
  * Author: Roger D. Voss
  * MIT License
  */
-package com.tideworks.data_load.io;
+package com.tideworks.extract_prq_metadata.io;
 
 import org.apache.parquet.io.SeekableInputStream;
 
