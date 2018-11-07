@@ -138,6 +138,12 @@
                 <resource>
                   <directory>${basedir}/conf</directory>
                 </resource>
+                <resource>
+                  <directory>${basedir}</directory>
+                  <includes>
+                    <include>run</include>
+                  </includes>
+                </resource>
               </resources>
             </configuration>
           </execution>
