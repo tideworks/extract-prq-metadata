@@ -196,9 +196,11 @@ public class ExtractMetaData {
     }
   }
 
-  private static void serializeFooter(final ParquetMetadata footer, final PositionOutputStream out) throws IOException {
+  private static void serializeFooter(ParquetMetadata footer, final PositionOutputStream out) throws IOException {
     out.write(ParquetFileWriter.MAGIC);
     final long footerIndex = out.getPos();
+    //noinspection unchecked
+    footer = new ParquetMetadata(footer.getFileMetaData(), Collections.EMPTY_LIST);
     final ParquetMetadataConverter metadataConverter = new ParquetMetadataConverter();
     final org.apache.parquet.format.FileMetaData parquetMetadata =
             metadataConverter.toParquetMetadata(ParquetFileWriter.CURRENT_VERSION, footer);
